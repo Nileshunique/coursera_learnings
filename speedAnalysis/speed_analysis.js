@@ -38,6 +38,7 @@ function endTest() {
     if (timeElapsed !== 0 && !isNaN(typedWords)) {
         wpm = Math.round((typedWords / timeElapsed) * 60);
     }
+    const wrongWords = errorWord(userTypedText)
 
     // Display the results
     var outputDiv = document.getElementById("output");
@@ -45,5 +46,19 @@ function endTest() {
         "<p>Total Length: " + totalLength + "</p>" +
         "<p>Words Typed: " + typedWords + "</p>" +
         "<p>Time Elapsed: " + timeElapsed.toFixed(2) + " seconds</p>" +
-        "<p>Words Per Minute (WPM): " + wpm + "</p>";
+        "<p>Words Per Minute (WPM): " + wpm + "</p>" +
+        "<h2>Error Words</h2>" + wrongWords.join("");
+}
+
+function errorWord(userTypedText) {
+    const userInput = userTypedText.split(" ");
+    const systemInput = testText.split(" ");
+    const wrongWords = []
+
+    for (let i = 0; i < systemInput.length; i++) {
+        if (systemInput[i] !== userInput[i]) {
+            wrongWords.push(`<p>${systemInput[i]} --> <mark>${userInput[i] || ""}</mark></p>`)
+        }
+    }
+    return wrongWords;
 }
